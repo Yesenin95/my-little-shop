@@ -1,0 +1,95 @@
+datasource db {
+   provider  = "postgresql"
+   url       = env("POSTGRES_PRISMA_URL")
+   directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+   provider = "prisma-client-js"
+}
+
+model User {
+   id            String    @id @default(cuid())
+   name          String?
+   email         String?   @unique
+   emailVerified DateTime?
+   image         String?
+   password      String?
+   status        String    @default("user")
+
+   carts Cart[] @relation("UserCarts")
+}
+
+model Cart {
+   id     String     @id @default(cuid())
+   userId String
+   user   User       @relation("UserCarts", fields: [userId], references: [id])
+   items  CartItem[]
+
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+}
+
+model CartItem {
+   id        String  @id @default(cuid())
+   cartId    String
+   cart      Cart    @relation(fields: [cartId], references: [id])
+   quantity  Int
+
+   createdAt DateTime @default(now())
+   updatedAt DateTime @updatedAt
+
+   cupcakeId String?
+   cupcake   Cupcake? @relation(fields: [cupcakeId], references: [id])
+   
+   cakeId    String?
+   cake      Cake?    @relation(fields: [cakeId], references: [id])
+   
+   pastryId  String?
+   pastry    Pastry?  @relation(fields: [pastryId], references: [id])
+}
+
+model Cupcake {
+   id            String  @id @default(cuid())
+   name          String
+   description   String
+   quantity      Int
+   price         Float
+   image         String?
+   protein       String
+   fats          String
+   carbohydrates String
+   mass          String
+   time          String?
+   cartItems     CartItem[]
+}
+
+model Cake {
+   id            String  @id @default(cuid())
+   name          String
+   description   String
+   quantity      Int
+   price         Float
+   image         String?
+   protein       String
+   fats          String
+   carbohydrates String
+   mass          String
+   time          String?
+   cartItems     CartItem[]
+}
+
+model Pastry {
+   id            String  @id @default(cuid())
+   name          String
+   description   String
+   quantity      Int
+   price         Float
+   image         String?
+   protein       String
+   fats          String
+   carbohydrates String
+   mass          String
+   time          String?
+   cartItems     CartItem[]
+}

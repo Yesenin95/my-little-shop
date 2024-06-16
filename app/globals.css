@@ -1,0 +1,24 @@
+:root {
+   --colar: #fff;
+}
+
+* {
+   box-sizing: border-box;
+   padding: 0;
+   margin: 0;
+}
+
+html,
+body {
+   max-width: 100vw;
+   height: 100vh;
+   overflow-x: hidden;
+   color: var(--colar);
+}
+
+.container {
+   flex: 1;
+   margin-top: '50px';
+   margin-left: 100px;
+   margin-right: 100px;
+}

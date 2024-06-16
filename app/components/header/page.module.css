@@ -1,0 +1,11 @@
+.activeLink {
+   font-weight: bold;
+   color: red;
+   border-bottom: 1px solid red;
+}
+.activeLink:hover{
+   color:rgba(255, 0, 0, 0.407)
+}
+.link:hover{
+   color: rgba(275, 275, 275, .5)
+}

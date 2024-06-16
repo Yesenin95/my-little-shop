@@ -1,0 +1,19 @@
+{
+   "version": 2,
+   "builds": [
+      {
+         "src": "api/*",
+         "use": "@vercel/node"
+      }
+   ],
+   "routes": [
+      {
+         "src": "/(.*)",
+         "dest": "/$1"
+      }
+   ],
+   "buildCommand": "npm run build",
+   "env": {
+      "DATABASE_URL": "postgresql://Yesenin95:pbluySf76PNM@ep-aged-cell-307504-pooler.us-west-2.aws.neon.tech/Shop?sslmode=require"
+   }
+}
