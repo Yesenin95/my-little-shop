@@ -1,14 +1,13 @@
-'use client';
-
+'use client'
 import React, { useState } from 'react';
 import {
+   Grid,
    Box,
-   Button,
    Heading,
-   SimpleGrid,
-   Stack,
    Text,
+   Stack,
    Image,
+   Button,
    HStack,
    useToast,
    Modal,
@@ -18,17 +17,21 @@ import {
    ModalBody,
    ModalFooter,
 } from '@chakra-ui/react';
+
 import { ProductCategory, useCart } from '../../cartContext/cartContext';
+import { useRouter } from 'next/navigation';
+
 interface SelectedItem {
    id: string;
    type: string;
    name: string;
 }
+
 const CartPage = () => {
    const { cart, removeFromCart, updateQuantity } = useCart();
    const [isModalOpen, setIsModalOpen] = useState(false);
    const [selectedItem, setSelectedItem] = useState<SelectedItem | null>(null);
-
+   const router = useRouter();
    const toast = useToast();
 
    const handleOpenModal = (item: any) => {
@@ -45,32 +48,41 @@ const CartPage = () => {
       if (selectedItem) {
          removeFromCart(selectedItem.id, selectedItem.type as ProductCategory);
          toast({
-            title: "Товар удален из корзины",
-            status: "success",
+            title: 'Товар удален из корзины',
+            status: 'info',
             duration: 3000,
             isClosable: true,
          });
          handleCloseModal();
       }
    };
+
    const handleCheckout = () => {
-      // Навигация на страницу оформления заказа
-      // Например, с помощью router.push('/checkout');
-      console.log('Переход на страницу оформления заказа');
+      router.push('/components/pages/Checkout');
    };
+
    const totalCost = cart.reduce((acc, item) => acc + item.price * item.quantity, 0);
 
    return (
       <Box p={5}>
-         <Heading as="h1" mb={5} textAlign="center">Корзина</Heading>
-         <SimpleGrid columns={[1, 2]} spacing={10}>
+         <Grid templateColumns={{ base: '1fr', md: '1fr 1fr' }} gap={10}>
             <Box>
                {cart.length === 0 ? (
-                  <Text textAlign="center" fontSize="lg">Ваша корзина пуста</Text>
+                  <Text textAlign="center" fontSize="lg">
+                     Ваша корзина пуста
+                  </Text>
                ) : (
-                  <Stack spacing={5}>
-                     {cart.map(item => (
-                        <Box key={`${item.type}-${item.id}`} p={5} shadow="md" borderWidth="1px" borderRadius="md">
+                     <Grid templateColumns={{ base: '1fr 1fr' }} gap={10} >
+                     {cart.map((item) => (
+                        <Box
+                           key={`${item.type}-${item.id}`}
+                           p={5}
+                           shadow="md"
+                           borderWidth="1px"
+                           borderRadius="md"
+                           width="100%"
+                           maxWidth={{ base: '100%', md: 'auto' }} // Устанавливаем максимальную ширину для адаптивности
+                        >
                            <Image
                               src={item.image || 'https://via.placeholder.com/150'}
                               alt={item.name}
@@ -79,7 +91,7 @@ const CartPage = () => {
                               height="200px"
                               objectFit="cover"
                            />
-                           <Stack spacing={2}>
+                           <Stack spacing={2} mt={3}>
                               <Text fontWeight="bold">{item.name}</Text>
                               <Text>${item.price}</Text>
                               <HStack justify="space-between">
@@ -121,19 +133,29 @@ const CartPage = () => {
                            </Stack>
                         </Box>
                      ))}
-                  </Stack>
+                  </Grid>
                )}
             </Box>
             <Box>
-               <Box bg="gray.100" p={5} borderRadius="md">
-                  <Heading as="h2" size="md" mb={3}>Общая стоимость</Heading>
-                  <Text fontWeight="bold" fontSize="xl">${totalCost.toFixed(2)}</Text>
-                  <Button mt={5} onClick={handleCheckout} colorScheme="blue" width="100%">
+               <Box bg="gray.100" p={5} borderRadius="md" maxWidth={{ base: '250px', md: 'auto' }} >
+                  <Heading as="h2" size="md" mb={3}>
+                     Общая стоимость
+                  </Heading>
+                  <Text fontWeight="bold" fontSize="xl">
+                     ${totalCost.toFixed(2)}
+                  </Text>
+                  <Button
+                     mt={5}
+                     onClick={handleCheckout}
+                     colorScheme="blue"
+                     width="100%"
+                     isDisabled={cart.length === 0} 
+                  >
                      Оформить заказ
                   </Button>
                </Box>
             </Box>
-         </SimpleGrid>
+         </Grid>
          <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
             <ModalOverlay />
             <ModalContent>
@@ -142,8 +164,12 @@ const CartPage = () => {
                   <Text>Вы точно хотите удалить {selectedItem ? selectedItem.name : ''} из корзины?</Text>
                </ModalBody>
                <ModalFooter>
-                  <Button colorScheme="red" onClick={handleRemoveFromCart}>Да</Button>
-                  <Button ml={3} onClick={handleCloseModal}>Нет</Button>
+                  <Button colorScheme="red" onClick={handleRemoveFromCart}>
+                     Да
+                  </Button>
+                  <Button ml={3} onClick={handleCloseModal}>
+                     Нет
+                  </Button>
                </ModalFooter>
             </ModalContent>
          </Modal>

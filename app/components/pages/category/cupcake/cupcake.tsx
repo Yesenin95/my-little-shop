@@ -1,10 +1,8 @@
-// cupcakePage.tsx
 
 'use client';
 
 import React, { useEffect, useState } from 'react';
 import {
-   Box,
    Card,
    CardBody,
    Image,
@@ -24,7 +22,6 @@ import {
    ModalFooter,
    useToast,
 } from '@chakra-ui/react';
-import { useRouter } from 'next/navigation';
 import { useCart } from '../../../cartContext/cartContext';
 import { CartItem, ProductCategory } from '../../../cartContext/cartContext';
 
@@ -40,7 +37,7 @@ interface Cupcake {
    carbohydrates: string;
    mass: string;
    time?: string;
-   type: ProductCategory; // Добавляем поле type для указания категории товара
+   type: ProductCategory;
 }
 
 export default function CupcakePage() {
@@ -48,7 +45,6 @@ export default function CupcakePage() {
    const [showModal, setShowModal] = useState(false);
    const [selectedCupcake, setSelectedCupcake] = useState<Cupcake | null>(null);
    const { addToCart } = useCart();
-   const router = useRouter();
    const toast = useToast();
 
    useEffect(() => {

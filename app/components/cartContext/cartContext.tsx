@@ -6,7 +6,7 @@ export enum ProductCategory {
    Cupcake = 'cupcake',
    Cake = 'cake',
    Pastry = 'pastry',
-   // Добавьте другие категории по мере необходимости
+   
 }
 
 export interface CartItem {
@@ -43,12 +43,21 @@ interface CartProviderProps {
 
 export const CartProvider: React.FC<CartProviderProps> = ({ children }) => {
    const [cart, setCart] = useState<CartItem[]>(() => {
-      const storedCart = localStorage.getItem('cart');
-      return storedCart ? JSON.parse(storedCart) : [];
+      // Проверяем доступность localStorage перед попыткой чтения данных
+      if (typeof window !== 'undefined') {
+         const storedCart = localStorage.getItem('cart');
+         return storedCart ? JSON.parse(storedCart) : [];
+      } else {
+         // Возвращаем пустой массив, если localStorage недоступен (например, на сервере)
+         return [];
+      }
    });
 
    useEffect(() => {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      // Проверяем доступность localStorage перед сохранением данных
+      if (typeof window !== 'undefined') {
+         localStorage.setItem('cart', JSON.stringify(cart));
+      }
    }, [cart]);
 
    const addToCart = (item: CartItem) => {

@@ -33,7 +33,7 @@
     "app/api/db/cupcake.js",
     "app/utilits/sortUtils.tsx",
     "app/utilits/filterUtuls.js"
-  ],
+, "app/api/auth/[...nextauth].js"  ],
   "exclude": [
     "node_modules"
   ]

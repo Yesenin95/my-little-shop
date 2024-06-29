@@ -3,9 +3,15 @@
    color: red;
    border-bottom: 1px solid red;
 }
-.activeLink:hover{
-   color:rgba(255, 0, 0, 0.407)
+
+.activeLink:hover {
+   color: rgba(255, 0, 0, 0.855);
 }
-.link:hover{
-   color: rgba(275, 275, 275, .5)
+
+.link:hover {
+   color: rgba(76, 0, 255, 0.855);
+}
+
+.link {
+   font-size: 20px;
 }

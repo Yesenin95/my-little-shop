@@ -1,5 +1,3 @@
-// cakePage.tsx
-
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -25,7 +23,7 @@ import {
    useToast,
 } from '@chakra-ui/react';
 import { useRouter } from 'next/navigation';
-import { useCart } from '../../../cartContext/cartContext';
+import { useCart, CartItem, ProductCategory } from '../../../cartContext/cartContext';
 
 interface Cake {
    id: string;
@@ -69,7 +67,16 @@ export default function CakePage() {
    };
 
    const handleAddToCart = (cake: Cake) => {
-      addToCart({ ...cake, type: 'cake' });
+      const item: CartItem = {
+         id: cake.id,
+         name: cake.name,
+         description: cake.description,
+         quantity: cake.quantity,
+         price: cake.price,
+         image: cake.image,
+         type: ProductCategory.Cake,
+      };
+      addToCart(item);
       toast({
          title: "Товар добавлен в корзину",
          status: "success",
